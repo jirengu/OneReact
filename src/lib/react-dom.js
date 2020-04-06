@@ -1,16 +1,38 @@
 function render(vdom, container) {
-  let node;
+  let dom = createDomFromVdom(vdom);
+  container.appendChild(dom);
+}
+
+function createDomFromVdom(vdom) {
+  let dom;
   if(typeof vdom === 'string') {
-    node = document.createTextNode(vdom);
+    dom = document.createTextNode(vdom);
   }
 
   if(typeof vdom === 'object') {
-    node = document.createElement(vdom.tag);
-    setAttribute(node, vdom.attrs);
-    vdom.children.forEach(childVdom => render(childVdom, node));
-  }
+    if(typeof vdom.tag === 'function') {
+      let component = new vdom.tag(vdom.attrs);
+      let componentVdom = component.render();
+      dom = createDomFromVdom(componentVdom); 
+      component.$root = dom; 
+    } else {
+      dom = document.createElement(vdom.tag);
+      setAttribute(dom, vdom.attrs);
+      vdom.children.forEach(childVdom => render(childVdom, dom));
+    }
 
-  container.appendChild(node);
+  }
+  return dom
+}
+
+function renderComponent(component) {
+  let componentVdom = component.render();
+  let dom = createDomFromVdom(componentVdom);
+
+  if(component.$root && component.$root.parentNode) {
+    component.$root.parentNode.replaceChild(dom, component.$root);
+  }
+  component.$root = dom;  
 }
 
 function setAttribute(node, attrs) {
@@ -27,11 +49,13 @@ function setAttribute(node, attrs) {
   }
 }
 
+
 const ReactDom = {
   render(vdom, container) {
     container.innerHTML = '';
     render(vdom, container);
-  }
+  },
+  renderComponent
 };
 
 export default ReactDom;
