@@ -3,7 +3,7 @@
 
 - 如何安装和配置Webpack
 - 如何安装和配置Babel
-- 如何安装React
+- 如何搭建React环境
 - 如何将结果包包含到HTML页面中
 - 如何安装和配置Webpack开发服务器
 
@@ -50,7 +50,7 @@ React组件主要是用现代JavaScript语法编写的。以class关键字为例
 
 这种转换称为转换。Webpack本身不知道如何转换JavaScript。相反，它依赖于loader作为转换工具。一个webpack loader 将某些东西作为输入并产生一个输出，称为bundle。
 
-`babel-loader`是负责与Babel对话的 webpack loader。同时 Babel必须配置预设（preset，针对不同的内容使用不同转换方法的插件）：
+`babel-loader`是负责与Babel对话的 webpack loader。同时 Babel必须配置预设（preset，预先配置好的一组插件）：
 
 - `@babel/preset-env` 用于将现代JavaScript编译为ES5
 - `@babel/preset-react` 可将JSX和其他内容编译为JavaScript
@@ -68,6 +68,21 @@ npm i @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev
 ```
 {
   "presets": ["@babel/preset-env", "@babel/preset-react"]
+}
+```
+
+或者
+
+```
+{
+  "presets": [
+    "@babel/preset-env"
+  ],
+  "plugins": [
+    ["transform-react-jsx", {
+        "pragma": "React.createElement"
+    }]
+  ]
 }
 ```
 
