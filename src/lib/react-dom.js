@@ -1,3 +1,5 @@
+import React from './react.js';
+
 function render(vdom, container) {
   let dom = createDomFromVdom(vdom);
   container.appendChild(dom);
@@ -11,7 +13,7 @@ function createDomFromVdom(vdom) {
 
   if(typeof vdom === 'object') {
     if(typeof vdom.tag === 'function') {
-      let component = new vdom.tag(vdom.attrs);
+      let component = createComponent(vdom.tag, vdom.attrs);
       let componentVdom = component.render();
       dom = createDomFromVdom(componentVdom); 
       component.$root = dom; 
@@ -24,6 +26,23 @@ function createDomFromVdom(vdom) {
   }
   return dom
 }
+
+function createComponent(constructor, attrs) {
+  let component; 
+  //如果是用class创建的
+  if(constructor.prototype instanceof React.Component) {
+    component = new constructor(attrs);
+  } else {
+    let Component = class extends React.Component {};
+    Component.prototype.render = function() {
+      return constructor.bind(this)(attrs);
+    }
+    component = new Component(attrs);   
+  } 
+  console.log(component);
+  return component;
+}
+
 
 function renderComponent(component) {
   let componentVdom = component.render();

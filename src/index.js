@@ -8,11 +8,9 @@ let styleObj = {
 };
 
 
-class Article extends React.Component {
-
-  render() {
-    return <p>hello { this.props.title }</p>;
-  }
+function Article(props) {
+  console.log(props)
+  return <p>hello { props.title }</p>;
 }
 
 class App extends React.Component {
