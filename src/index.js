@@ -24,20 +24,32 @@ function render(vdom, container) {
 
   if(typeof vdom === 'object') {
     node = document.createElement(vdom.tag);
+    setAttribute(node, vdom.attrs);
     vdom.children.forEach(childVdom => render(childVdom, node));
   }
 
   container.appendChild(node);
 }
 
+function setAttribute(node, attrs) {
+  if(!attrs) return;
 
+  for(let key in attrs) {
+    if(key.startsWith('on')) {
+      node[key.toLocaleLowerCase()] = attrs[key];
+    } else if(key === 'style') {
+      Object.assign(node.style, attrs[key]);
+    } else {
+      node[key] = attrs[key];
+    }
+  }
+}
 
 let str = 'jirengu';
 let styleObj = {
   color: 'red',
   fontSize: '30px'
 };
-
 
 ReactDom.render((
   <div className="wrap">
