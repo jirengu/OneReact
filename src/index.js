@@ -1,4 +1,4 @@
-import React from './lib/react.js';
+import React, { Component } from './lib/react.js';
 import ReactDOM from './lib/react-dom.js';
 
 let str = 'jirengu';
@@ -13,7 +13,7 @@ function Article(props) {
   return <p>hello { props.title }</p>;
 }
 
-class App extends React.Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {

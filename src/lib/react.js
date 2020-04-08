@@ -1,4 +1,5 @@
-import ReactDOM from './react-dom.js';
+//import ReactDOM from './react-dom.js';
+import { renderComponent } from './react-dom.js';
 
 window.Components = []
 class Component {
@@ -10,21 +11,26 @@ class Component {
 
   setState(state) {
     Object.assign(this.state, state);
-    ReactDOM.renderComponent(this);
+    //ReactDOM.renderComponent(this);
+    renderComponent(this);
   }
 };
 
 
-const React = {
-  createElement(tag, attrs, ...children) {
-    return {
-      tag,
-      attrs, 
-      children
-    }
-  },
+function createElement(tag, attrs, ...children) {
+  return {
+    tag,
+    attrs, 
+    children
+  }
+}
 
+export {
+  createElement,
   Component
 };
 
-export default React;
+export default {
+  createElement,
+  Component
+};

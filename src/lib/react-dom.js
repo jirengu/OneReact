@@ -1,6 +1,6 @@
 import React from './react.js';
 
-function render(vdom, container) {
+function renderVdom(vdom, container) {
   let dom = createDomFromVdom(vdom);
   container.appendChild(dom);
 }
@@ -20,7 +20,7 @@ function createDomFromVdom(vdom) {
     } else {
       dom = document.createElement(vdom.tag);
       setAttribute(dom, vdom.attrs);
-      vdom.children.forEach(childVdom => render(childVdom, dom));
+      vdom.children.forEach(childVdom => renderVdom(childVdom, dom));
     }
 
   }
@@ -69,12 +69,18 @@ function setAttribute(node, attrs) {
 }
 
 
-const ReactDom = {
-  render(vdom, container) {
-    container.innerHTML = '';
-    render(vdom, container);
-  },
+function render(vdom, container) {
+  container.innerHTML = '';
+  renderVdom(vdom, container);
+}
+
+
+export {
+  render,
   renderComponent
 };
 
-export default ReactDom;
+export default {
+  render,
+  renderComponent
+};
